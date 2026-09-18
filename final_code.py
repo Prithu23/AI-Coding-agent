@@ -1,25 +1,41 @@
-def subtract_numbers(a, b, c):
+from collections import deque
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def bfs_traversal(root):
     """
-    Subtracts the values of b and c from a, and prints the result.
+    Perform a breadth-first traversal of a binary tree and return a list of lists,
+    where each inner list represents a level of the tree.
 
     Parameters:
-    - a (int/float): The first number.
-    - b (int/float): The second number to be subtracted from a.
-    - c (int/float): The third number to be subtracted from a.
+    root (TreeNode): The root node of the binary tree.
 
     Returns:
-    - None: This function does not return a value.
-
-    Example usage:
-    >>> subtract_numbers(10, 5, 2)
-    3
-    >>> subtract_numbers(20, 10, 10)
-    0
-    >>> subtract_numbers(-5, 1, 2)
-    its a negative
+    list of list of int: A list of lists, where each sublist contains the values of nodes
+                          at the corresponding level of the tree.
     """
-    result = a - b - c
-    if result < 0:
-        print("its a negative")
-    else:
-        print(result)
+    if not root:
+        return []
+
+    queue = deque([root])
+    result = []
+
+    while queue:
+        level_size = len(queue)
+        current_level = []
+
+        for _ in range(level_size):
+            node = queue.popleft()
+            current_level.append(node.val)
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
+
+        result.append(current_level)
+
+    return result
